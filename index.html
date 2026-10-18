@@ -331,7 +331,7 @@ function lookup(raw){const code=String(raw).trim().replace(/\s/g,'');const row=c
  return{code,sku:sku||'',cat,pr,found:!!(cat||pr.length),name:(pr[0]&&pr[0].n)||(cat&&cat.n)||'',list:l0,price:ap.length?Math.min(...ap.map(p=>p.p)):l0,promo:act.length>0}}
 function card(L){if(!L.found){const b13=/^\d{13}$/.test(L.code)?L.code:'';return`<div class="card">${b13?`<svg id="bc" data-v="${b13}"></svg>`:''}<div class="nm">${L.sku?'Sản phẩm '+esc(L.sku):'Không tìm thấy mã '+esc(L.code)}</div><div class="mu">${DB.cat.length?'Mã này không có trong dữ liệu danh mục / khuyến mãi.':'Chưa có dữ liệu – vào ⚙️ Cài đặt để đồng bộ.'}</div></div>`}
  const bc=/^\d{13}$/.test(L.code)?L.code:(L.cat&&/^\d{13}$/.test(L.cat.b)?L.cat.b:''),l=L.list,AP=L.pr.filter(p=>status(p.d)[2]==='on'),NP=L.pr.filter(p=>status(p.d)[2]!=='on'),hp=AP.some(p=>p.p>0),plain=[],ruled=[],mem=[];
- const isM=p=>/thanh vien|member|vip/.test(norm(p.t)),mem=[];AP.forEach(p=>((isM(p)&&p.p>0)?mem:(String(p.t||'').trim()?ruled:plain)).push(p));
+ const isM=p=>/thanh vien|member|vip/.test(norm(p.t));AP.forEach(p=>((isM(p)&&p.p>0)?mem:(String(p.t||'').trim()?ruled:plain)).push(p));
  const dt=d=>{const st=status(d),c=st[2]==='off'?(/hết/.test(st[0])?'bad':'wa'):'ok';return`<div class="tm ${c}" style="margin-bottom:6px">⏰ ${esc(d||'Chưa rõ thời gian')} · ${st[0]}</div>`};
  let h=`<div class="card">${bc?`<svg id="bc" data-v="${bc}"></svg>`:''}<div class="nm">${esc(L.name)}</div>${stk(L.sku)}<div class="pl"><small>Giá niêm yết${L.pr[0]&&L.pr[0].u?' / '+esc(L.pr[0].u):''}:</small><div class="v${hp?' cut':''}">${l?fmt(l):'-'}</div></div>`;
  const byP=new Map();plain.forEach(p=>{if(!(p.p>0))return;const a=byP.get(p.p)||byP.set(p.p,[]).get(p.p);if(a.indexOf(p.d)<0)a.push(p.d)});
